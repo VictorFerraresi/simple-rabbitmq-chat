@@ -61,6 +61,12 @@ public class Chatter {
                             System.out.println("Exemplo: /w Victor Ola, esta e uma mensagem privada!");
                         }
                         break;
+                    case "sair":
+                        String leaveMsg = nickname + " saiu da sala!";
+                        System.out.println(leaveMsg);
+                        channel.basicPublish(EXCHANGE_NAME, "", null, leaveMsg.getBytes("UTF-8"));
+                        System.exit(0);
+                        break;
                     default:
                         System.out.println("Este comando (/"+ msg.substring(1, finish) +") nao existe!");
                         break;
