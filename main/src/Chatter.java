@@ -71,6 +71,10 @@ public class Chatter {
                         channel.basicPublish(EXCHANGE_NAME, "", null, leaveMsg.getBytes("UTF-8"));
                         connected = false;
                         break;
+                    case "ajuda":
+                        System.out.println("------------[Comandos]------------");
+                        System.out.println("/w - Envia uma mensagem privada");
+                        System.out.println("/sair - desconecta do chat");
                     default:
                         System.out.println("Este comando (/"+ msg.substring(1, finish) +") nao existe!");
                         break;
