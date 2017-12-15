@@ -59,6 +59,8 @@ public class Chatter {
                         if(params.length < 3){
                             System.out.println("USO: /w Nome Mensagem");
                             System.out.println("Exemplo: /w Victor Ola, esta e uma mensagem privada!");
+                        } else {
+                            System.out.println("<!> Sistema em implementacao!");
                         }
                         break;
                     case "sair":
