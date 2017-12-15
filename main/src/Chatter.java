@@ -43,7 +43,9 @@ public class Chatter {
         String joinMsg = String.format(generateRandomJoinMessage(), nickname);
         channel.basicPublish(EXCHANGE_NAME, "", null, joinMsg.getBytes("UTF-8"));
 
-        while(true){
+        boolean connected = true;
+
+        while(connected){
             String msg = s.nextLine();
 
             if(msg.startsWith("/")){ //Command
@@ -67,7 +69,7 @@ public class Chatter {
                         String leaveMsg = nickname + " saiu da sala!";
                         System.out.println(leaveMsg);
                         channel.basicPublish(EXCHANGE_NAME, "", null, leaveMsg.getBytes("UTF-8"));
-                        System.exit(0);
+                        connected = false;
                         break;
                     default:
                         System.out.println("Este comando (/"+ msg.substring(1, finish) +") nao existe!");
@@ -84,8 +86,8 @@ public class Chatter {
             }
         }
 
-        //channel.close();
-        //conn.close();
+        channel.close();
+        conn.close();
     }
 
     private static String generateRandomJoinMessage() {
