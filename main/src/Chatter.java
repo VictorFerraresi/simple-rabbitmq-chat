@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class Chatter {
 
-    private static final String EXCHANGE_NAME = "general";
+    private static final String EXCHANGE_NAME = "generalTopic";
     private static String nickname;
     private static ArrayList<String> joinMsgs;
 
@@ -20,7 +20,7 @@ public class Chatter {
         Connection conn = factory.newConnection();
         Channel channel = conn.createChannel();
 
-        channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.FANOUT);
+        channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.TOPIC);
 
         String queueName = channel.queueDeclare().getQueue(); //Random Queue Name
         channel.queueBind(queueName, EXCHANGE_NAME, "");
