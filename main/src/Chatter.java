@@ -70,6 +70,7 @@ public class Chatter {
         joinMsgs.add("Pessoal, %s entrou. Finjam que estao ocupados.");
         joinMsgs.add("Eu desisto. Ate o %s agora?");
         joinMsgs.add("%s chegou atrasado, pra variar.");
+        joinMsgs.add("Shhhh! %s acabou de entrar.");
     }
 
 }
