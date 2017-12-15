@@ -2,15 +2,19 @@ import com.rabbitmq.client.*;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Chatter {
 
     private static final String EXCHANGE_NAME = "general";
-    private static String nickname; 
+    private static String nickname;
+    private static ArrayList<String> joinMsgs;
 
     public static void main(String[] argv) throws Exception {
+        addJoinMessages();
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("localhost");
         Connection conn = factory.newConnection();
@@ -36,7 +40,9 @@ public class Chatter {
         System.out.println("Digite o seu nome:");
         nickname = s.nextLine();
 
-        System.out.println("Seja bem vindo a sala de chat principal, " + nickname + "!");
+        String joinMsg = String.format(generateRandomJoinMessage(), nickname);
+        channel.basicPublish(EXCHANGE_NAME, "", null, joinMsg.getBytes("UTF-8"));
+
         while(true){
             String msg = s.nextLine();
 
@@ -47,11 +53,23 @@ public class Chatter {
             String finalMsg = "[" + sDate + "] " + nickname + ": " + msg;
 
             channel.basicPublish(EXCHANGE_NAME, "", null, finalMsg.getBytes("UTF-8"));
-            //System.out.println(finalMsg);
         }
 
         //channel.close();
         //conn.close();
+    }
+
+    private static String generateRandomJoinMessage() {
+        return joinMsgs.get((new Random()).nextInt(joinMsgs.size()));
+    }
+
+    private static void addJoinMessages() {
+        joinMsgs = new ArrayList<String>();
+
+        joinMsgs.add("Saiam daqui! %s acabou de chegar.");
+        joinMsgs.add("Pessoal, %s entrou. Finjam que estao ocupados.");
+        joinMsgs.add("Eu desisto. Ate o %s agora?");
+        joinMsgs.add("%s chegou atrasado, pra variar.");
     }
 
 }
