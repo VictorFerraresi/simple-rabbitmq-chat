@@ -18,4 +18,4 @@ A simple RabbitMQ Chat room using Java
 
 
 7. Choose a nickname and start typing messages at the console.
-8. I'm aware of the exception when you Ctrl+C and I'll fix it soon.
+~~8. I'm aware of the exception when you Ctrl+C and I'll fix it soon.~~ It's fixed
