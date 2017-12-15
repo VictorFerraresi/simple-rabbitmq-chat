@@ -46,13 +46,34 @@ public class Chatter {
         while(true){
             String msg = s.nextLine();
 
-            Date date = new Date();
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-            String sDate = sdf.format(date);
+            if(msg.startsWith("/")){ //Command
+                int finish;
+                if(msg.indexOf(' ') != -1){
+                    finish = msg.indexOf(' ');
+                } else {
+                    finish = msg.length();
+                }
+                switch(msg.substring(1, finish)){
+                    case "w":
+                        String[] params = msg.split("\\s+");
+                        if(params.length < 3){
+                            System.out.println("USO: /w Nome Mensagem");
+                            System.out.println("Exemplo: /w Victor Ola, esta e uma mensagem privada!");
+                        }
+                        break;
+                    default:
+                        System.out.println("Este comando (/"+ msg.substring(1, finish) +") nao existe!");
+                        break;
+                }
+            } else {
+                Date date = new Date();
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+                String sDate = sdf.format(date);
 
-            String finalMsg = "[" + sDate + "] " + nickname + ": " + msg;
+                String finalMsg = "[" + sDate + "] " + nickname + ": " + msg;
 
-            channel.basicPublish(EXCHANGE_NAME, "", null, finalMsg.getBytes("UTF-8"));
+                channel.basicPublish(EXCHANGE_NAME, "", null, finalMsg.getBytes("UTF-8"));
+            }
         }
 
         //channel.close();
