@@ -10,20 +10,25 @@ import java.util.Scanner;
 public class Chatter {
 
     private static final String EXCHANGE_NAME = "generalTopic";
+    private static final String EXCHANGE_NAME2 = "directTopic";
     private static String nickname;
     private static ArrayList<String> joinMsgs;
 
     public static void main(String[] argv) throws Exception {
         addJoinMessages();
         ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("localhost");
+        //factory.setHost("donkey.rmq.cloudamqp.com");
+        //factory.setPort(1883);
+        factory.setUri("amqp://aqqhwsok:QgZCD05h7EBfYrmKBsHmoOTcE4FDXpcP@donkey.rmq.cloudamqp.com/aqqhwsok");
         Connection conn = factory.newConnection();
         Channel channel = conn.createChannel();
 
         channel.exchangeDeclare(EXCHANGE_NAME, BuiltinExchangeType.TOPIC);
+        channel.exchangeDeclare(EXCHANGE_NAME2, BuiltinExchangeType.DIRECT);
 
         String queueName = channel.queueDeclare().getQueue(); //Random Queue Name
         channel.queueBind(queueName, EXCHANGE_NAME, "");
+        channel.queueBind(queueName, EXCHANGE_NAME2, "");
 
         Consumer consumer = new DefaultConsumer(channel) {
             @Override
