@@ -2,10 +2,7 @@ import com.rabbitmq.client.*;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 public class Chatter {
 
@@ -63,7 +60,7 @@ public class Chatter {
                 }
                 switch(msg.substring(1, finish)){
                     case "w":
-                        String[] params = msg.split("\\s+");
+                        String[] params = msg.split("\\s+", 3);
                         if(params.length < 3){
                             System.out.println("USO: /w Nome Mensagem");
                             System.out.println("Exemplo: /w Victor Ola, esta e uma mensagem privada!");
