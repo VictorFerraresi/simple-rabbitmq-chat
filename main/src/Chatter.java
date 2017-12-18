@@ -28,7 +28,6 @@ public class Chatter {
 
         String queueName = channel.queueDeclare().getQueue(); //Random Queue Name
         channel.queueBind(queueName, EXCHANGE_NAME, "");
-        channel.queueBind(queueName, EXCHANGE_NAME2, "");
 
         Consumer consumer = new DefaultConsumer(channel) {
             @Override
@@ -44,6 +43,8 @@ public class Chatter {
         Scanner s = new Scanner(System.in);
         System.out.println("Digite o seu nome:");
         nickname = s.nextLine();
+
+        channel.queueBind(queueName, EXCHANGE_NAME2, nickname);
 
         String joinMsg = String.format(generateRandomJoinMessage(), nickname);
         channel.basicPublish(EXCHANGE_NAME, "", null, joinMsg.getBytes("UTF-8"));
@@ -67,7 +68,14 @@ public class Chatter {
                             System.out.println("USO: /w Nome Mensagem");
                             System.out.println("Exemplo: /w Victor Ola, esta e uma mensagem privada!");
                         } else {
-                            System.out.println("<!> Sistema em implementacao!");
+                            Date date = new Date();
+                            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+                            String sDate = sdf.format(date);
+
+                            String whisper = "[" + sDate + "] " + "Mensagem privada de " + nickname + ": " + params[2];
+                            channel.basicPublish(EXCHANGE_NAME2, params[1], null, whisper.getBytes());
+                            whisper = "[" + sDate + "] " + "Mensagem privada para " + params[1] + ": " + params[2];
+                            channel.basicPublish(EXCHANGE_NAME2, nickname, null, whisper.getBytes());
                         }
                         break;
                     case "sair":
